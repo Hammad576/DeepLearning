@@ -14,7 +14,7 @@ export const modelsData = [
       summary: "Recurrent Neural Networks for sequential data.",
       description:
         "RNNs are used for time-series data and natural language processing.",
-      image: "/cnnLogo2.avif",
+      image: "/download.jpeg",
       slug: "rnn",
     },
   ];
