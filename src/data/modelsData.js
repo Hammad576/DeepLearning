@@ -17,4 +17,13 @@ export const modelsData = [
       image: "/download.jpeg",
       slug: "rnn",
     },
+    {
+      id: 3,
+      title: "VIT",
+      summary: "Recurrent Neural Networks for sequential data.",
+      description:
+        "RNNs are used for time-series data and natural language processing.",
+      image: "/download.jpeg",
+      slug: "rnn",
+    },
   ];
