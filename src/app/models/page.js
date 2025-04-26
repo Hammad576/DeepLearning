@@ -13,6 +13,7 @@ export default function ModelsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8   ml-4">
             {modelsData.map((model) => (
               <ModelCard
+                imageUrl={model.image}
                 key={model.id}
                 title={model.title}
                 summary={model.summary}

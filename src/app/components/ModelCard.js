@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-export default function ModelCard({ title, summary, href }) {
+export default function ModelCard({ imageUrl,title, summary, href }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -15,7 +15,7 @@ export default function ModelCard({ title, summary, href }) {
       {/* Model Image */}
       <div className="relative h-48 overflow-hidden">
         <Image
-          src="/cnnLogo2.avif" // Replace with your model image path
+          src={imageUrl} // Replace with your model image path
           alt={title}
           width={500}
           height={300}
