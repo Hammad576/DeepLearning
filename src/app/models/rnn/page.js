@@ -24,7 +24,7 @@ export default function RNNPage() {
           {/* Model Image */}
           <div className="relative h-96 overflow-hidden rounded-lg shadow-md mb-8">
             <Image
-              src="/rnn-placeholder.jpg" // Replace with your actual RNN image
+              src="/cutePuppu.webp" // Replace with your actual RNN image
               alt="Recurrent Neural Networks"
               width={1200}
               height={600}

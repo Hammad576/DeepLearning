@@ -18,7 +18,7 @@ export default function Navbar() {
         </motion.h1>
 
         {/* Navigation Links */}
-        <ul className="flex gap-6 text-lg font-medium">
+        <ul className="mr-[40vw] flex gap-6 text-lg font-medium">
           <li>
             <motion.div
               whileHover={{ scale: 1.1, translateY: -5 }}

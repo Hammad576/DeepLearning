@@ -24,7 +24,7 @@ export default function ViTPage() {
           {/* Model Image */}
           <div className="relative h-96 overflow-hidden rounded-lg shadow-md mb-8">
             <Image
-              src="/vit-placeholder.jpg" // Replace with your actual ViT image
+              src="/cutePuppu.webp" // Replace with your actual ViT image
               alt="Vision Transformer"
               width={1200}
               height={600}
