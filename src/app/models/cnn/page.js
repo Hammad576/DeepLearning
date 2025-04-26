@@ -26,7 +26,6 @@ export default function CNNPage() {
 
     setLoading(true);
 
-    // Simulate sending the image to the backend for prediction
     try {
       const formData = new FormData();
       const fileInput = document.querySelector('input[type="file"]');
@@ -82,7 +81,7 @@ export default function CNNPage() {
 
             {image && (
               <div className="mt-6">
-                <h2 className=" text-xl font-bold text-red-400">Uploaded Image:</h2>
+                <h2 className="text-xl font-bold text-red-400">Uploaded Image:</h2>
                 <Image
                   src={image}
                   alt="Uploaded Image"
@@ -96,7 +95,7 @@ export default function CNNPage() {
             <button
               onClick={handlePredict}
               disabled={loading}
-              className={`ml-[5vw] bg-red-500 text-white px-6 py-3 rounded font-medium mt-4 ${
+              className={`bg-red-500 text-white px-6 py-3 rounded font-medium mt-4 ${
                 loading ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"
               } transition-all duration-300`}
             >

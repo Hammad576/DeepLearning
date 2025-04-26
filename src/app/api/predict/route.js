@@ -1,6 +1,5 @@
+
 import { NextResponse } from "next/server";
-import path from "path";
-import fs from "fs";
 import { predictImage } from "../../../../utils/model";
 
 export async function POST(request) {
@@ -12,16 +11,8 @@ export async function POST(request) {
       return NextResponse.json({ error: "No image provided" }, { status: 400 });
     }
 
-    // Save the uploaded file temporarily
-    const filePath = path.join(process.cwd(), "public", "uploads", file.name);
-    const buffer = Buffer.from(await file.arrayBuffer());
-    fs.writeFileSync(filePath, buffer);
-
-    // Process the image and get the prediction
-    const prediction = await predictImage(filePath);
-
-    // Clean up the temporary file
-    fs.unlinkSync(filePath);
+    // Perform prediction
+    const prediction = await predictImage(file);
 
     return NextResponse.json({ prediction });
   } catch (error) {

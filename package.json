@@ -11,6 +11,7 @@
   "dependencies": {
     "framer-motion": "^12.9.2",
     "next": "15.3.1",
+    "onnxruntime-web": "^1.21.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -22,6 +23,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.1",
     "postcss": "^8.5.3",
-    "tailwindcss": "^4.1.4"
+    "tailwindcss": "^4.1.4",
+    "worker-loader": "^3.0.8"
   }
 }

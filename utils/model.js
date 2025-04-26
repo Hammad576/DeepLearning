@@ -1,33 +1,69 @@
-import path from "path";
-import fs from "fs";
-import * as tf from "@tensorflow/tfjs-node";
-import torch from "torch"; // Ensure you have PyTorch installed in your Node.js environment
+import { InferenceSession } from "onnxruntime-web";
 
-// Load your pre-trained CNN model
-const modelPath = path.join(process.cwd(), "utils", "catdog_cnn.pth");
-const model = torch.load(modelPath); // Load the PyTorch model
-model.eval(); // Set the model to evaluation mode
+// Load the ONNX model
+let session;
 
-// Preprocess the image for the model
-function preprocessImage(imagePath) {
-  const image = tf.node.decodeImage(fs.readFileSync(imagePath), 3); // Decode the image
-  const resizedImage = tf.image.resizeBilinear(image, [224, 224]); // Resize to match model input size
-  const normalizedImage = resizedImage.div(255.0).expandDims(); // Normalize and add batch dimension
-  return normalizedImage;
+export async function loadModel() {
+  if (!session) {
+    // Load the ONNX model using onnxruntime-web
+    session = await InferenceSession.create("/utils/catdog_cnn.onnx"); // Path to your ONNX model
+  }
+}
+
+// Preprocess the image
+function preprocessImage(image) {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  // Resize the image to match the input dimensions of the model (e.g., 64x64)
+  const size = 64;
+  canvas.width = size;
+  canvas.height = size;
+  ctx.drawImage(image, 0, 0, size, size);
+
+  // Convert the image to a tensor
+  const imageData = ctx.getImageData(0, 0, size, size).data;
+  const data = new Float32Array(size * size * 3);
+
+  for (let i = 0; i < imageData.length / 4; i++) {
+    data[i * 3] = (imageData[i * 4] / 255.0 - 0.5) / 0.5; // Normalize R channel
+    data[i * 3 + 1] = (imageData[i * 4 + 1] / 255.0 - 0.5) / 0.5; // Normalize G channel
+    data[i * 3 + 2] = (imageData[i * 4 + 2] / 255.0 - 0.5) / 0.5; // Normalize B channel
+  }
+
+  return data;
 }
 
 // Predict the class of the image
-export async function predictImage(imagePath) {
-  // Preprocess the image
-  const tensor = preprocessImage(imagePath);
+export async function predictImage(file) {
+  if (!session) {
+    await loadModel(); // Ensure the model is loaded
+  }
 
-  // Perform inference
-  const output = model(tensor); // Pass the tensor through the model
-  const probabilities = torch.softmax(output, dim=1); // Apply softmax to get probabilities
-  const result = probabilities.argmax(dim=1).item(); // Get the predicted class index
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+    img.onload = async () => {
+      try {
+        // Preprocess the image
+        const tensor = preprocessImage(img);
 
-  // Interpret the result (e.g., 0 = Cat, 1 = Dog)
-  const label = result === 0 ? "Cat" : "Dog";
+        // Create input tensor
+        const inputTensor = new Float32Array(1 * 3 * 64 * 64); // Batch size=1, channels=3, 64x64 image
+        inputTensor.set(tensor);
 
-  return label;
+        // Run inference
+        const feeds = { input: new Tensor("float32", inputTensor, [1, 3, 64, 64]) }; // Input tensor with shape [batch_size, channels, height, width]
+        const outputs = await session.run(feeds);
+        const output = outputs.output.data[0]; // Extract the output
+
+        // Interpret the result
+        const label = output > 0.5 ? "Dog" : "Cat";
+        resolve(label);
+      } catch (error) {
+        console.error("Error during prediction:", error);
+        reject(error);
+      }
+    };
+  });
 }
