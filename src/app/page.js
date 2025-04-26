@@ -1,13 +1,11 @@
 "use client";
-
-import Navbar from "../app/components/Navbar";
-import Footer from "../app/components/Footer";
+ 
 import Link from "next/link";
 
 export default function HomePage() {
   return (
     <>
-      <Navbar />
+     
       <main className="py-16">
         <div className="container text-center">
           {/* Header Section */}
@@ -33,12 +31,12 @@ export default function HomePage() {
               Deep learning models are a subset of machine learning that use neural networks with multiple layers to process and analyze complex data. Unlike traditional machine learning, deep learning can automatically learn features from raw data, making it highly effective for tasks like image recognition, natural language processing, and time-series forecasting.
             </p>
             <p className="text-lg">
-              These models excel at handling large datasets and uncovering intricate patterns, which makes them superior to traditional machine learning in scenarios requiring high accuracy and scalability.
+              These models are capable of handling large data sets and learning pattern between these dataset, which makes them superior to traditional machine learning in scenarios requiring high accuracy and scalability.
             </p>
           </div>
         </div>
       </main>
-      <Footer />
+   
     </>
   );
 }

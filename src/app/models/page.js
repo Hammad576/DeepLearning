@@ -6,7 +6,7 @@ import { modelsData } from "../../data/modelsData";
 export default function ModelsPage() {
   return (
     <>
-      <Navbar />
+     
       <main className="py-16 ">
         <div className="container">
           <h2 className="text-3xl font-bold   mb-8 text-center">Models</h2>
@@ -23,7 +23,7 @@ export default function ModelsPage() {
           </div>
         </div>
       </main>
-      <Footer />
+ 
     </>
   );
 }

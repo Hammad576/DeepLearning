@@ -2,8 +2,51 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function CNNPage() {
+  const [image, setImage] = useState(null); // Store the uploaded image
+  const [prediction, setPrediction] = useState(""); // Store the model's prediction
+  const [loading, setLoading] = useState(false); // Show loading state during prediction
+
+  // Handle image upload
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(URL.createObjectURL(file)); // Preview the uploaded image
+    }
+  };
+
+  // Handle prediction request
+  const handlePredict = async () => {
+    if (!image) {
+      alert("Please upload an image first.");
+      return;
+    }
+
+    setLoading(true);
+
+    // Simulate sending the image to the backend for prediction
+    try {
+      const formData = new FormData();
+      const fileInput = document.querySelector('input[type="file"]');
+      formData.append("image", fileInput.files[0]);
+
+      const response = await fetch("/api/predict", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+      setPrediction(result.prediction); // Set the prediction result
+    } catch (error) {
+      console.error("Error predicting:", error);
+      alert("An error occurred while processing the image.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="bg-zinc-900 text-white min-h-screen">
       {/* Header Section */}
@@ -13,7 +56,7 @@ export default function CNNPage() {
             Convolutional Neural Networks (CNN)
           </h1>
           <p className="text-gray-400">
-            A deep dive into CNNs and their applications in image classification.
+            A CNN Model which can classify Cats and Dogs. If you provide an image, it can differentiate whether it is a cat or a dog.
           </p>
         </div>
       </section>
@@ -21,50 +64,62 @@ export default function CNNPage() {
       {/* Content Section */}
       <section className="py-16">
         <div className="container mx-auto px-6">
-          {/* Model Image */}
-          <div className="relative h-96 overflow-hidden rounded-lg shadow-md mb-8">
-            <Image
-              src="/cutePuppu.webp" // Replace with your actual CNN image
-              alt="Convolutional Neural Networks"
-              width={1200}
-              height={600}
-              className="w-full h-full object-cover"
+          {/* File Upload Section */}
+          <div className="text-center space-y-4">
+            <label
+              htmlFor="upload"
+              className="bg-red-500 text-white px-6 py-3 rounded font-medium cursor-pointer hover:bg-red-600 transition-colors duration-300"
+            >
+              Upload Image
+            </label>
+            <input
+              id="upload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageUpload}
             />
+
+            {image && (
+              <div className="mt-6">
+                <h2 className=" text-xl font-bold text-red-400">Uploaded Image:</h2>
+                <Image
+                  src={image}
+                  alt="Uploaded Image"
+                  width={300}
+                  height={300}
+                  className="w-full h-64 object-cover rounded-lg shadow-md"
+                />
+              </div>
+            )}
+
+            <button
+              onClick={handlePredict}
+              disabled={loading}
+              className={`ml-[5vw] bg-red-500 text-white px-6 py-3 rounded font-medium mt-4 ${
+                loading ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"
+              } transition-all duration-300`}
+            >
+              {loading ? "Predicting..." : "Predict"}
+            </button>
+
+            {prediction && (
+              <div className="mt-6 text-center">
+                <h2 className="text-2xl font-bold text-green-400">
+                  Prediction:
+                </h2>
+                <p className="text-xl text-gray-400">{prediction}</p>
+              </div>
+            )}
           </div>
 
-          {/* Model Description */}
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-red-400">Overview</h2>
-            <p className="text-gray-400">
-              Convolutional Neural Networks (CNNs) are a class of deep learning models specifically designed for processing structured grid data such as images. They excel at tasks like image classification, object detection, and segmentation due to their ability to capture spatial hierarchies in data.
-            </p>
-
-            <h2 className="text-2xl font-bold text-red-400">How It Works</h2>
-            <p className="text-gray-400">
-              CNNs work by applying convolutional filters to input images to extract features such as edges, textures, and patterns. These features are then passed through pooling layers to reduce dimensionality and fully connected layers for classification or regression tasks.
-            </p>
-
-            <h2 className="text-2xl font-bold text-red-400">Applications</h2>
-            <ul className="list-disc list-inside text-gray-400 space-y-2">
-              <li>Image Classification (e.g., identifying cats vs. dogs)</li>
-              <li>Object Detection (e.g., detecting cars in a video frame)</li>
-              <li>Medical Imaging (e.g., diagnosing diseases from X-rays)</li>
-              <li>Facial Recognition Systems</li>
-            </ul>
-
-            <h2 className="text-2xl font-bold text-red-400">Implementation</h2>
-            <p className="text-gray-400">
-              In this project, we implemented a CNN using TensorFlow/Keras to classify images into two categories: cats and dogs. The model achieved an accuracy of 95% on the test dataset after training for 10 epochs.
-            </p>
-
-            {/* Back to Models Button */}
-            <div className="mt-10 text-center">
-              <Link href="/models">
-                <button className="bg-red-500 text-white px-6 py-3 rounded font-medium hover:bg-red-600 transition-colors duration-300">
-                  Back to Models
-                </button>
-              </Link>
-            </div>
+          {/* Back to Models Button */}
+          <div className="mt-10 text-center">
+            <Link href="/models">
+              <button className="bg-red-500 text-white px-6 py-3 rounded font-medium hover:bg-red-600 transition-colors duration-300">
+                Back to Models
+              </button>
+            </Link>
           </div>
         </div>
       </section>
