@@ -1,7 +1,8 @@
-import Navbar from "../../../../components/Navbar";
-import Footer from "../../../../components/Footer";
-import { modelsData } from "../../../../../data/modelsData";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+import { modelsData } from "../../../data/modelsData";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 
 export default function ModelDetails({ params }) {
   const model = modelsData.find((m) => m.slug === params.slug);
@@ -17,7 +18,7 @@ export default function ModelDetails({ params }) {
         <div className="container">
           <h1 className="text-3xl font-bold mb-4">{model.title}</h1>
           <p className="text-gray-400 mb-4">{model.summary}</p>
-          <img
+          <Image
             src={model.image}
             alt={model.title}
             className="w-full h-64 object-cover rounded mb-4"

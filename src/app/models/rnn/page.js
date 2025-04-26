@@ -54,7 +54,7 @@ export default function RNNPage() {
 
             <h2 className="text-2xl font-bold text-red-400">Implementation</h2>
             <p className="text-gray-400">
-              In this project, we implemented an RNN using TensorFlow/Keras to predict the next word in a sentence. The model was trained on a dataset of Shakespeare's works and achieved promising results in generating coherent text.
+              In this project, we implemented an RNN using TensorFlow/Keras to predict the next word in a sentence. The model was trained on a dataset of Shakespeares works and achieved promising results in generating coherent text.
             </p>
 
             {/* Back to Models Button */}

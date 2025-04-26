@@ -95,7 +95,7 @@ export default function CNNPage() {
             <button
               onClick={handlePredict}
               disabled={loading}
-              className={`bg-red-500 text-white px-6 py-3 rounded font-medium mt-4 ${
+              className={`ml-[5vw] bg-red-500 text-white px-6 py-3 rounded font-medium mt-4 ${
                 loading ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"
               } transition-all duration-300`}
             >
