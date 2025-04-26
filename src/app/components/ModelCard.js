@@ -15,7 +15,7 @@ export default function ModelCard({ title, summary, href }) {
       {/* Model Image */}
       <div className="relative h-48 overflow-hidden">
         <Image
-          src="/placeholder.jpg" // Replace with your model image path
+          src="/cnnLogo2.avif" // Replace with your model image path
           alt={title}
           width={500}
           height={300}
